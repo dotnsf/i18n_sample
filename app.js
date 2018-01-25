@@ -19,13 +19,6 @@ i18n.configure({
 });
 app.use( i18n.init );
 
-app.use( function( req, res, next ){
-  if( req.session && req.session.locale ){
-    i18n.setLocale( req, req.session.locale );
-  }
-  next();
-});
-
 app.get( '/', function( req, res ){
   res.render( 'index' );
 });
