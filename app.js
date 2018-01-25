@@ -10,17 +10,21 @@ var express = require( 'express' ),
 
 var port = 3000;
 
-i18n.configure({
-  locales: ['en', 'fr', 'ja'],
-//  defaultLocale: 'ja',
-  directory: __dirname + '/locales'
-});
-
-app.use( express.static( __dirname + '/public' ) );
-
 app.set( 'views', __dirname + '/public' );
 app.set( 'view engine', 'ejs' );
+
+i18n.configure({
+  locales: ['en', 'fr', 'ja'],
+  directory: __dirname + '/locales'
+});
 app.use( i18n.init );
+
+app.use( function( req, res, next ){
+  if( req.session && req.session.locale ){
+    i18n.setLocale( req, req.session.locale );
+  }
+  next();
+});
 
 app.get( '/', function( req, res ){
   res.render( 'index' );
